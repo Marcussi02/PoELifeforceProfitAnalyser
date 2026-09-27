@@ -145,7 +145,7 @@ class LifeforceApp:
                 self.cache[cache_key] = (time.time(), result)
                 self.root.after(0, lambda: self._on_fetch_success(result))
             except (requests.RequestException, ValueError) as exc:
-                self.root.after(0, lambda: self._on_fetch_error(exc))
+                self.root.after(0, lambda err=exc: self._on_fetch_error(err))
 
         Thread(target=worker, daemon=True).start()
 

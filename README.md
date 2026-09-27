@@ -1,5 +1,9 @@
 # PoE Lifeforce Value Checker
 
+[![CI](https://github.com/Marcussi02/PoELifeforceProfitAnalyser/actions/workflows/ci.yml/badge.svg)](https://github.com/Marcussi02/PoELifeforceProfitAnalyser/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
 Simple Python app to compare `Vivid`, `Primal`, and `Wild` lifeforce value in Path of Exile 1 using poe.ninja exchange data.
 
 It includes:
@@ -31,13 +35,12 @@ It includes:
 
 ## Setup
 
-### 1) Clone / copy project
+### 1) Clone the project
 
-Place these files in a folder:
-
-- `poe_analyzer.py`
-- `poe_gui.py`
-- `requirements.txt`
+```bash
+git clone https://github.com/Marcussi02/PoELifeforceProfitAnalyser.git
+cd PoELifeforceProfitAnalyser
+```
 
 ### 2) Create and activate virtual environment
 
@@ -63,7 +66,7 @@ pip install -r requirements.txt
 
 ## Run
 
-## GUI (recommended)
+### GUI (recommended)
 
 ```bash
 python poe_gui.py
@@ -77,15 +80,15 @@ Defaults:
 
 If league is blank, app falls back to `Standard`.
 
-## CLI
+### CLI
 
-### Manual divine rate
+#### Manual divine rate
 
 ```bash
 python poe_analyzer.py --league Mirage --amount 50000 --chaos-per-divine 330
 ```
 
-### Use poe.ninja divine rate
+#### Use poe.ninja divine rate
 
 ```bash
 python poe_analyzer.py --league Mirage --amount 50000 --use-poeninja-divine-rate
@@ -107,3 +110,20 @@ python poe_analyzer.py --league Mirage --amount 50000 --use-poeninja-divine-rate
 - API/network errors:
   - check internet access and retry later
 
+## How it works
+
+`analyze_lifeforce()` fetches the league's currency exchange lines from poe.ninja, then `analyze_lines()` does the pure calculation: for each lifeforce colour it converts your amount to whole chaos, splits that into whole Divine Orbs plus leftover chaos at your chosen rate, and recommends a payout. The GUI runs the fetch on a background thread and caches results briefly so repeated checks don't hit the API.
+
+## Tests
+
+The calculation is tested offline against fixed exchange data, so no network is needed:
+
+```bash
+pip install pytest ruff
+pytest -q
+ruff check --select E,F --line-length 130 .
+```
+
+## License
+
+[MIT](LICENSE)

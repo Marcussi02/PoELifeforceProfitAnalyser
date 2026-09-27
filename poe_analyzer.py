@@ -13,7 +13,18 @@ TARGET_LIFEFORCES = {
 
 
 def analyze_lifeforce(league: str, amount: float, chaos_per_divine_override: float | None = None) -> Dict[str, Any]:
+    """Fetch live poe.ninja data for a league and analyse it."""
     lines = fetch_currency_lines(league)
+    return analyze_lines(lines, league, amount, chaos_per_divine_override)
+
+
+def analyze_lines(
+    lines: List[Dict[str, Any]],
+    league: str,
+    amount: float,
+    chaos_per_divine_override: float | None = None,
+) -> Dict[str, Any]:
+    """Analyse already-fetched currency lines (pure, no network)."""
     rate_source = "manual"
     if chaos_per_divine_override is not None:
         chaos_per_divine = float(chaos_per_divine_override)
